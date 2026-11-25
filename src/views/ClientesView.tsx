@@ -38,6 +38,10 @@ const EMPTY_FORM: ClienteFormState = {
   rol: "remitente",
 };
 
+function capitalizarPrimeraLetra(texto: string): string {
+  return texto ? texto.charAt(0).toUpperCase() + texto.slice(1) : texto;
+}
+
 const BASURA_PATTERNS = [
   /^(.)\1+$/i,
   /qwerty/i,
@@ -356,8 +360,8 @@ export function ClientesView({ baseUrl, token }: ClientesViewProps) {
         <label>
           Rol
           <select value={form.rol} onChange={(e) => handleChange("rol", e.target.value)}>
-            <option value="remitente">remitente</option>
-            <option value="destinatario">destinatario</option>
+            <option value="remitente">Remitente</option>
+            <option value="destinatario">Destinatario</option>
           </select>
         </label>
 
@@ -427,9 +431,9 @@ export function ClientesView({ baseUrl, token }: ClientesViewProps) {
                   <td>{c.telefono}</td>
                   <td>{c.direccion}</td>
                   <td>{c.correo}</td>
-                  <td>{c.rol}</td>
+                  <td>{capitalizarPrimeraLetra(c.rol)}</td>
                   <td className="actions-cell">
-                    <button type="button" onClick={() => startEdit(c)}>Editar</button>
+                    <button type="button" className="edit-btn" onClick={() => startEdit(c)}>Editar</button>
                     <button type="button" className="danger-btn" onClick={() => void handleDelete(c.id)}>
                       Eliminar
                     </button>
