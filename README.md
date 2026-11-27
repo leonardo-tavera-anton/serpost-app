@@ -1,43 +1,31 @@
 # SERPOST App
 
-Aplicacion de escritorio para Windows basada en Java 25 y Java Swing.
+Aplicación de escritorio implementada con Java 25 y Java Swing. El cliente utiliza el backend existente de Serpost, que conserva el acceso a la misma base de datos del proyecto.
 
-## Desarrollo
+## Ejecutar
 
-```powershell
-npm install
-npm run dev
-```
-
-El backend predeterminado es `http://localhost:3001`. Puede cambiarse desde **Configuracion** dentro de la aplicacion.
-
-## Operaciones disponibles
-
-- Registrar clientes mediante `POST /clientes`
-- Consultar clientes por UUID mediante `GET /clientes/{id_cliente}`
-- Actualizar clientes mediante `PUT /clientes/{id_cliente}`
-
-## Pruebas del backend
-
-En la aplicacion use **Pruebas del backend** para ejecutar una serie de casos
-contra el servicio configurado:
-
-- Rechazo sin autenticacion Bearer
-- Registro de un cliente
-- Consulta por UUID
-- Actualizacion del cliente
-- Rechazo de documentos duplicados
-- Validacion de campos obligatorios
-
-Cada caso muestra su estado HTTP, tiempo de respuesta, resultado esperado y
-cuerpo devuelto por el backend.
-
-El backend protege las operaciones con OAuth2 JWT. Configure un Bearer token valido en **Configuracion**.
-
-## Instalar en Windows
+Requisitos: JDK 25 y Maven. Desde la carpeta del proyecto:
 
 ```powershell
-npm run dist
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+mvn clean package
+java -jar target/serpost-app-1.0.0.jar
 ```
 
-El instalador NSIS se genera en `release/`.
+El servicio backend predeterminado es `http://localhost:8081`. La aplicación guarda la URL configurada en **Conexión al servicio** para los siguientes inicios. Si cliente y backend están en equipos distintos, reemplaza `localhost` por la IP del equipo que ejecuta el backend.
+
+El cliente está preparado para el perfil de desarrollo `local` y no envía tokens. Inicia el backend con el comando `docker compose` indicado en su README; ese perfil permite las solicitudes de esta aplicación sin autenticación. La integración de autenticación para producción queda fuera del alcance actual.
+
+## Arquitectura
+
+```text
+Cliente Java Swing → HTTP → Backend Serpost → Base de datos existente
+```
+
+El cliente no crea otra base de datos ni se conecta directamente a ella. La comunicación HTTP usa el formato que ya acepta el backend.
+
+## Funciones
+
+- Registrar, consultar, actualizar y eliminar clientes.
+- Registrar, consultar, actualizar estados y eliminar envíos.
+- Calcular tarifas y aplicar la cotización al envío para generar una boleta.
