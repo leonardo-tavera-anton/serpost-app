@@ -1,6 +1,6 @@
 # SERPOST App
 
-Aplicacion de escritorio para Windows basada en Electron, React y TypeScript.
+Aplicacion de escritorio para Windows basada en Java 25 y Java Swing.
 
 ## Desarrollo
 
