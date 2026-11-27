@@ -233,7 +233,7 @@ public final class App {
       String url=baseUrl.replaceAll("/+$","")+path;
       HttpClient client=HttpClient.newHttpClient();
       HttpResponse<String> response=send(client,method,url,body);
-      if(response.statusCode()==401)throw new IllegalStateException("HTTP 401: el backend rechazó el acceso anónimo. Comprueba que el servicio en "+baseUrl+" se haya iniciado con el perfil local.");
+      if(response.statusCode()==401)throw new IllegalStateException("HTTP 401: el servicio en "+baseUrl+" exige autenticación. Esta app no envía tokens; en desarrollo, detén cualquier instancia que ocupe ese puerto y levanta Serpost_Backend con `docker compose up --build` para activar el perfil local.");
       if(response.statusCode()==403)throw new IllegalStateException("HTTP 403: el backend no permite esta operación.");
       if(response.statusCode()<200||response.statusCode()>=300)throw new IllegalStateException("HTTP "+response.statusCode()+": "+response.body());
       if(response.body().isBlank())return null;

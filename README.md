@@ -14,7 +14,14 @@ java -jar target/serpost-app-1.0.0.jar
 
 El servicio backend predeterminado es `http://localhost:8081`. La aplicación guarda la URL configurada en **Conexión al servicio** para los siguientes inicios. Si cliente y backend están en equipos distintos, reemplaza `localhost` por la IP del equipo que ejecuta el backend.
 
-El cliente está preparado para el perfil de desarrollo `local` y no envía tokens. Inicia el backend con el comando `docker compose` indicado en su README; ese perfil permite las solicitudes de esta aplicación sin autenticación. La integración de autenticación para producción queda fuera del alcance actual.
+El cliente está preparado para el perfil de desarrollo `local` y no envía tokens. Para levantar el backend vecino incluido en `Serpost_Backend`, abre otra terminal en esa carpeta y ejecuta:
+
+```powershell
+Copy-Item .env.example .env   # solo la primera vez
+docker compose up --build
+```
+
+Espera a que Docker indique que el backend está listo y vuelve a pulsar **Actualizar lista**. Compose configura el perfil `local` y publica el servicio en `http://localhost:8081`. Si el cliente muestra `HTTP 401`, ese puerto está atendido por otro backend o por uno iniciado sin el perfil `local`; detén esa instancia y vuelve a iniciar el backend con el comando anterior. No uses el perfil `local` en producción. La integración de autenticación para producción queda fuera del alcance actual.
 
 ## Arquitectura
 
